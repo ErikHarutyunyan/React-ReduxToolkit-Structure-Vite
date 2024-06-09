@@ -1,10 +1,10 @@
 import path from 'path';
 
 // import million from 'million/compiler';
-import { visualizer } from 'rollup-plugin-visualizer';
+// import { compression } from 'vite-plugin-compression2'
 import { defineConfig } from 'vite';
-import viteCompression from 'vite-plugin-compression';
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+// import { imagetools } from 'vite-imagetools';
+import viteImagemin from 'vite-plugin-imagemin';
 import svgr from 'vite-plugin-svgr';
 
 import react from '@vitejs/plugin-react-swc';
@@ -24,42 +24,40 @@ export default defineConfig({
       },
       include: '**/*.svg',
     }),
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
-    }),
-    viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-    }),
-    ViteImageOptimizer({
-      test: /\.(jpe?g|png|gif|svg)$/i,
-      includePublic: true,
-      jpeg: {
-        quality: 85,
+    // imagetools(),
+    viteImagemin({
+      gifsicle: {
+        optimizationLevel: 7,
+        interlaced: false,
       },
-      png: {
-        quality: [0.8, 0.9],
-      },
-      svg: {
-        multipass: true,
-      },
-      gif: {
+      optipng: {
         optimizationLevel: 7,
       },
+      mozjpeg: {
+        quality: 75,
+      },
+      pngquant: {
+        quality: [0.65, 0.8],
+        speed: 4,
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'removeViewBox',
+            active: false,
+          },
+          {
+            name: 'removeEmptyAttrs',
+            active: false,
+          },
+        ],
+      },
       webp: {
-        quality: 85,
-        lossless: true,
-      },
-      avif: {
-        quality: 85,
-        lossless: true,
+        quality: 75,
       },
     }),
-    visualizer({
-      filename: './dist/bundle-stats.html',
-      open: true,
-    }),
+    // compression({algorithm: "gzip", deleteOriginalAssets: true}),
+    // compression({ algorithm: 'brotliCompress', deleteOriginalAssets: true }),
   ],
   resolve: {
     alias: {

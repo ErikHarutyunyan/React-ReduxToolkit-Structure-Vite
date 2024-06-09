@@ -54,6 +54,7 @@ module.exports = {
   },
   plugins: ['react-refresh', 'react-hooks', 'prettier', 'import'],
   rules: {
+    'import/no-unresolved': 'warn',
     'no-unused-vars': 'warn',
     'no-var': 'warn',
     'no-console': 'warn',
