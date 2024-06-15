@@ -1,6 +1,7 @@
+import TokenService from '@services/token.service';
+
 import { createSlice } from '@reduxjs/toolkit';
 
-import TokenService from '../../../services/token.service';
 import { getUserDetails, registerUser, userLogin } from './userActions';
 
 // initialize userToken from local storage
@@ -47,7 +48,7 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
+      .addCase(registerUser.fulfilled, state => {
         state.loading = false;
         // registration successful
         state.success = true;
